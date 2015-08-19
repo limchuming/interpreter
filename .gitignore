@@ -41,3 +41,17 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.log
+*.ilk
+Debug/interpreter.exe
+*.tlog
+interpreter.sln
+*.vcxproj
+interpreter/Debug/vc140.pdb
+*.filters
+interpreter/Debug/vc140.idb
+*.obj
+interpreter.sdf
+*.suo
+Debug/interpreter.pdb
+*.opensdf
