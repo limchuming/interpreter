@@ -29,6 +29,9 @@ std::string Reader::read_identifier(){
   if(isalpha(current_ch)){
     // first letter has to be a letter of the alphabet
     // thereafter it needs to be in the allowed_idenchar list
+    std::string new_iden_name;
+    new_iden_name.push_back(current_ch);
+    
     while(isalnum(current_ch)){
       // get letter by letter and stop when the char stops being in allowed_idenchar
       
