@@ -14,7 +14,8 @@ public:
 		AnyType(other).swap(*this);
 		return *this;
 	}
-	template <typename T>	T &get_data() { return (dynamic_cast<InputType<T> &>(*(data_ptr.get()))).data; }
+	//template <typename T>	T &get_data() { return (dynamic_cast<InputType<T> &>(*(data_ptr.get()))).data; }
+	template <typename T>	T &get_data() { return (dynamic_cast<InputType<T> *>(data_ptr.get()))->data; }
 	template <typename T>	const T &get_data() const { return (dynamic_cast<InputType<T> &>(*(data_ptr.get()))).data; }
 
 private:
