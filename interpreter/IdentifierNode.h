@@ -40,13 +40,8 @@ public:
   IdentifierMap(){}
 
   template <typename T>
-  T &get_identifier(const std::string &identifier_name){
-    auto iden_search_iter = idenmap.find(identifier_name);
-    if(iden_search_iter != idenmap.end()){
-      return idenmap[identifier_name].get_data<T>();
-    }else{
-      throw std::out_of_range("Identifier not found.");
-    }
+  const T &get_identifier(const std::string &identifier_name) const{
+      return idenmap.at(identifier_name).get_data<T>();
   }
   
   template <typename T>
