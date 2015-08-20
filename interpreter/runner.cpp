@@ -2,15 +2,16 @@
 #include "IdentifierNode.h"
 
 int main() {
-
-	AnyType test(4);
-	AnyType newobj;
-	newobj = test;
-	newobj.get_data<int>() = 99;
-	std::cout << test.get_data<int>() <<std::endl;
-	std::cout << newobj.get_data<int>() << std::endl;
-
-	
+  
+  IdentifierMap identifier_store;
+  identifier_store.set_identifier<int>("first_iden",5);
+  identifier_store.set_identifier<std::string>("second_iden","five_string");
+    
+    
+  std::cout << identifier_store.get_identifier<int>("first_iden") << std::endl;
+  std::cout << identifier_store.get_identifier<std::string>("second_iden") << std::endl;
+  
+  
 	int stop;
 	std::cin >> stop;
 
