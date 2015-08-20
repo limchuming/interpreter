@@ -14,9 +14,9 @@ public:
 		AnyType(other).swap(*this);
 		return *this;
 	}
-  void swap(AnyType& other) { other.data_ptr.swap(this->data_ptr); }
-	template <typename T>	T &get_data() { return dynamic_cast<InputType<T> *>(data_ptr.get())->data; }
-  template <typename T>	const T &get_data() const { return dynamic_cast<InputType<T> *>(data_ptr.get())->data;}
+	void swap(AnyType& other) { other.data_ptr.swap(this->data_ptr); }
+	template <typename T> T &get_data() { return dynamic_cast<InputType<T> *>(data_ptr.get())->data; }
+	template <typename T>	const T &get_data() const { return dynamic_cast<InputType<T> *>(data_ptr.get())->data;}
   
 private:
 	struct Base {
