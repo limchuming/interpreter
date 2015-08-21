@@ -39,6 +39,11 @@ class IdentifierMap{
 public:
   IdentifierMap(){}
 
+  bool is_identifier(const std::string &identifier_name) const {
+	  auto iden_iter = idenmap.find(identifier_name);
+	  return iden_iter != idenmap.end();
+  }
+
   template <typename T>
   const T &get_identifier(const std::string &identifier_name) const{
       return idenmap.at(identifier_name).get_data<T>();

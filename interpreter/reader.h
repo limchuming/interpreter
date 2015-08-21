@@ -4,17 +4,16 @@
 #include "IdentifierNode.h"
 #include <algorithm>
 #include <iostream>
-#include <sstream>
 
 class Reader{
 public:
 	Reader(std::istream &is_, IdentifierMap &id_map);
+	template <typename T> void evaluate();
+private:
 	std::string read_identifier();
 	template <typename T> T factor();
 	template <typename T> T term();
 	template <typename T> T expression();
-	template <typename T> T evaluate();
-private:
 	const std::string allowed_idenchar;
 	char current_ch;
 	std::istream &is;
@@ -23,7 +22,7 @@ private:
 
 Reader::Reader(std::istream &is_, IdentifierMap &id_map)
 	:allowed_idenchar("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_")
-	,is(is_), identifier_map(id_map){}
+	, is(is_), identifier_map(id_map) {}
 
 std::string Reader::read_identifier(){
 	if(isspace(current_ch)){
@@ -46,7 +45,7 @@ std::string Reader::read_identifier(){
 			is >> current_ch; // skip empty spaces
 		}
 		return new_iden_name;
-		}
+	}
 	else {
 		throw std::logic_error("Not an identifier.");
 	}
@@ -55,8 +54,8 @@ std::string Reader::read_identifier(){
 template <typename T>
 T Reader::expression(){
 	T retval = term<T>();
-	while (current_idenchar == '+' || current_idenchar == '-' ) {
-		if (current_idenchar == '+') {
+	while (current_ch == '+' || current_ch == '-' ) {
+		if (current_ch == '+') {
 			retval = retval + term<T>();
 		}
 		else {
@@ -70,7 +69,7 @@ template <typename T>
 T Reader::term() {
 	T retval = factor<T>();
 	while (true) {
-		switch (current_idenchar) {
+		switch (current_ch) {
 		case '*': retval = retval * factor<T>(); break;
 		case '/': retval = retval / factor<T>(); break;
 		default: return retval;
@@ -80,26 +79,25 @@ T Reader::term() {
 
 template <typename T>
 T Reader::factor() {
+	is >> current_ch;
 	T retval; 
 	bool negative = false;
 	double float_number;
-	is >> current_idenchar;
-
-	while (current_idenchar == '-' || current_idenchar == '+') {
-		if (current_idenchar == '-') {
+	while (current_ch == '-' || current_ch == '+') {
+		if (current_ch == '-') {
 			negative = negative ? false : true;
 		}
-		is >> current_idenchar;
+		is >> current_ch;
 	}
-
-	if (isdigit(current_iden) || current_iden == '.') {
-		is.putback(current_iden);
-		is >> float_number >> current_idenchar;
+	
+	if (isdigit(current_ch) || current_ch == '.') {
+		is.putback(current_ch);
+		is >> retval >> current_ch;
 	}
-	else if (current_iden == '(') {
+	else if (current_ch == '(') {
 		retval = expression<T>();
-		if (current_iden == ')') {
-			is >> current_iden;
+		if (current_ch == ')') {
+			is >> current_ch;
 		}
 		else {
 			throw std::logic_error("Open bracket is not closed");
@@ -112,9 +110,11 @@ T Reader::factor() {
 		}
 		catch (const std::bad_cast &ex) {
 			// do something
+			std::cout << "here1";
 		}
 		catch (const std::out_of_range &ex) {
 			// do something
+			std::cout << "here2";
 		}
 	}
 	
@@ -122,8 +122,21 @@ T Reader::factor() {
 }
 
 template <typename T> 
-T evaluate() {
-
+void Reader::evaluate() {
+	is >> current_ch;
+	std::string first_word = read_identifier();
+	/*
+	if (!identifier_map.is_identifier(first_word)) {
+		throw std::out_of_range("first word is not identifier");
+	}
+	*/
+	
+	if (current_ch == '=') {
+		identifier_map.set_identifier(first_word, expression<T>());
+	}
+	else {
+		throw std::logic_error("tmp error");
+	}
 }
 
 #endif
