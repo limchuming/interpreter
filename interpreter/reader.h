@@ -18,7 +18,7 @@ private:
 	char current_ch;
 	std::istream &is;
 	IdentifierMap &identifier_map;
-};	
+};
 
 Reader::Reader(std::istream &is_, IdentifierMap &id_map)
 	:allowed_idenchar("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_")
@@ -33,7 +33,7 @@ std::string Reader::read_identifier(){
 		// first letter has to be a letter of the alphabet
 		// thereafter it needs to be in the allowed_idenchar list
 		std::string new_iden_name;
-		new_iden_name.push_back(current_ch);    
+		new_iden_name.push_back(current_ch);
 		current_ch = is.get();
 
 		while (std::any_of(allowed_idenchar.cbegin(), allowed_idenchar.cend(), [this](char idch) {return current_ch == idch; })) {
@@ -80,16 +80,15 @@ T Reader::term() {
 template <typename T>
 T Reader::factor() {
 	is >> current_ch;
-	T retval; 
+	T retval;
 	bool negative = false;
-	double float_number;
 	while (current_ch == '-' || current_ch == '+') {
 		if (current_ch == '-') {
 			negative = negative ? false : true;
 		}
 		is >> current_ch;
 	}
-	
+
 	if (isdigit(current_ch) || current_ch == '.') {
 		is.putback(current_ch);
 		is >> retval >> current_ch;
@@ -117,11 +116,11 @@ T Reader::factor() {
 			std::cout << "here2";
 		}
 	}
-	
+
 	return negative ? -retval : retval;
 }
 
-template <typename T> 
+template <typename T>
 void Reader::evaluate() {
 	is >> current_ch;
 	std::string first_word = read_identifier();
@@ -130,7 +129,7 @@ void Reader::evaluate() {
 		throw std::out_of_range("first word is not identifier");
 	}
 	*/
-	
+
 	if (current_ch == '=') {
 		identifier_map.set_identifier(first_word, expression<T>());
 	}
